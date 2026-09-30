@@ -36,7 +36,7 @@ const lit_etat_http = node({
     "name": "Lit etat (HTTP)",
     "parameters": {
       "method": "GET",
-      "url": "https://ludivine0210.app.n8n.cloud/api/v1/data-tables/P7G27SLdIWYRTSXn/rows",
+      "url": "={{ $vars.N8N_URL }}/api/v1/data-tables/{{ $vars.TABLE_ETAT }}/rows",
       "sendHeaders": true,
       "headerParameters": {
         "parameters": [
@@ -95,7 +95,7 @@ const sauve_etat_http = node({
     "name": "Sauve etat (HTTP)",
     "parameters": {
       "method": "POST",
-      "url": "https://ludivine0210.app.n8n.cloud/api/v1/data-tables/P7G27SLdIWYRTSXn/rows",
+      "url": "={{ $vars.N8N_URL }}/api/v1/data-tables/{{ $vars.TABLE_ETAT }}/rows",
       "sendHeaders": true,
       "headerParameters": {
         "parameters": [
@@ -241,7 +241,7 @@ const contexte_7j_http = node({
     "name": "Contexte 7j (HTTP)",
     "parameters": {
       "method": "GET",
-      "url": "https://ludivine0210.app.n8n.cloud/api/v1/data-tables/b52lE6aeplzD3ifn/rows",
+      "url": "={{ $vars.N8N_URL }}/api/v1/data-tables/{{ $vars.TABLE_QUOTIDIEN }}/rows",
       "sendHeaders": true,
       "headerParameters": {
         "parameters": [
@@ -276,7 +276,7 @@ const enregistre_jour_http = node({
     "name": "Enregistre jour (HTTP)",
     "parameters": {
       "method": "POST",
-      "url": "https://ludivine0210.app.n8n.cloud/api/v1/data-tables/b52lE6aeplzD3ifn/rows",
+      "url": "={{ $vars.N8N_URL }}/api/v1/data-tables/{{ $vars.TABLE_QUOTIDIEN }}/rows",
       "sendHeaders": true,
       "headerParameters": {
         "parameters": [
@@ -359,7 +359,7 @@ const archive_echange_http = node({
     "name": "Archive echange (HTTP)",
     "parameters": {
       "method": "POST",
-      "url": "https://ludivine0210.app.n8n.cloud/api/v1/data-tables/zpmCJfqEfW6mK9IT/rows",
+      "url": "={{ $vars.N8N_URL }}/api/v1/data-tables/{{ $vars.TABLE_CONVERSATIONS }}/rows",
       "sendHeaders": true,
       "headerParameters": {
         "parameters": [
