@@ -1,4 +1,4 @@
-# 1er idée de projet — Boussole
+## Boussole
 
 Assistant de suivi de routine, d'énergie et d'équilibre de vie, construit sur
 n8n. Projet de cours : instance n8n Cloud, déploiement via MCP et le SDK
