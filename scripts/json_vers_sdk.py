@@ -13,7 +13,16 @@ import json
 import re
 
 SRC = "1er idee de projet.json"
-OUT = "boussole_sdk.js"
+OUT = "boussole_sdk.ts"
+
+# Identifiants de Data Tables de l'instance de dev -> variables d'environnement.
+# Un depot partage ne doit pas embarquer les identifiants d'une instance.
+TABLE_IDS = {
+    "P7G27SLdIWYRTSXn": "TABLE_ETAT",
+    "b52lE6aeplzD3ifn": "TABLE_QUOTIDIEN",
+    "zpmCJfqEfW6mK9IT": "TABLE_CONVERSATIONS",
+    "P7OxPmXXHduoXONC": "TABLE_BILANS",
+}
 
 KIND = {
     "@n8n/n8n-nodes-langchain.chatTrigger": "trigger",
@@ -40,14 +49,30 @@ def conv(v):
     Le SDK interprete une chaine '{"{{ ... }}"' comme une expression et y
     ajoute le '=' tout seul. Il ne faut donc surtout PAS entourer ces valeurs
     par expr(...) dans les parametres : le serveur le stocke litteralement et
-    casse le workflow. reserving=expr() est reserve a la composition .to().
+    casse le workflow.
 
-    On ne touche donc que la structure : la valeur reste une chaine.
+    On touche aussi les valeurs trop specifiques d'une instance : URL d'instance
+    et identifiants de Data Tables sont remplaces par des variables
+    d'environnement, pour que le workflow soit portable d'une instance a l'autre
+    et ne fuite aucune identite dans un depot partage.
     """
     if isinstance(v, dict):
         return {k: conv(x) for k, x in v.items()}
     if isinstance(v, list):
         return [conv(x) for x in v]
+    if isinstance(v, str):
+        substitue = v
+        # identifiants de tables de l'instance d'origine -> variables d'env
+        for tid, var in TABLE_IDS.items():
+            substitue = substitue.replace(tid, "{{ $vars." + var + " }}")
+        # URL de l'instance -> variable d'env
+        substitue = re.sub(r"https://[a-z0-9.-]+\.app\.n8n\.cloud",
+                           "{{ $vars.N8N_URL }}", substitue)
+        # si on a injecte une expression et que la valeur n'etait pas deja une
+        # expression, il faut ajouter le '=' initial que n8n exige
+        if substitue != v and "{{" in substitue and not v.startswith("="):
+            return "=" + substitue
+        return substitue
     return v
 
 

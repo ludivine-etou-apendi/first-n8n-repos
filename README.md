@@ -21,21 +21,23 @@ Raccourci : `/matin 3, 7h, 2, finir la présentation` passe la ligne d'un coup.
 
 | Fichier | Rôle |
 |---|---|
-| `workflow/1er-idee-de-projet.js` | le workflow, code SDK (c'est le fichier à importer dans n8n) |
-| `workflow/1er-idee-de-projet.json` | le même workflow au format JSON natif n8n |
+| `workflow/1er-idee-de-projet.ts` | le workflow, code TypeScript SDK — **le seul fichier de workflow du dépôt** |
 | `scripts/` | utilitaires de génération et de déploiement MCP |
 | `schema-datables.md` | structure des 4 tables de données |
+
+Le workflow est une source unique en `.ts` : il n'existe pas de doublon JSON
+dans le dépôt.
 
 ## Importer dans n8n
 
 Dans l'UI n8n : **Workflows → ⋯ → Import from File**, et choisir
-`workflow/1er-idee-de-projet.js`. Ou par API :
+`workflow/1er-idee-de-projet.ts`. Ou par API :
 
 ```bash
 curl -X POST https://<instance>/api/v1/workflows \
   -H "X-N8N-API-KEY: <ta-cle>" \
   -H "Content-Type: application/json" \
-  -d "{\"name\":\"1er idée de projet\",\"code\":$(cat workflow/1er-idee-de-projet.js)}"
+  -d "{\"name\":\"1er idée de projet\",\"code\":$(cat workflow/1er-idee-de-projet.ts)}"
 ```
 
 ## Variables d'environnement à créer dans n8n
@@ -47,6 +49,15 @@ dans le workflow. Aucun secret n'est versionné ici.
 |---|---|
 | `N8N_API_KEY` | clé API n8n, utilisée par les nœuds HTTP pour lire/écrire dans les Data Tables |
 | `MISTRAL_API_KEY` | clé API Mistral, pour la rédaction des recommandations |
+| `N8N_URL` | URL de l'instance n8n, ex. `https://<ton-instance>.app.n8n.cloud` |
+| `TABLE_ETAT` | identifiant de la Data Table `boussole_etat` |
+| `TABLE_QUOTIDIEN` | identifiant de la Data Table `boussole_quotidien` |
+| `TABLE_CONVERSATIONS` | identifiant de la Data Table `boussole_conversations` |
+
+Les trois dernières rendent le workflow portable : aucune URL d'instance ni
+identifiant de table n'est codé en dur, donc le dépôt fonctionne sur n'importe
+quelle instance. Les identifiants se trouvent dans l'URL des Data Tables dans
+l'UI n8n.
 
 ## Data Tables
 
