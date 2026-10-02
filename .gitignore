@@ -3,10 +3,17 @@
 .env*
 !*.env.example
 
-# cles n8n / API
+# cles n8n / API — noms anglais
 n8n.key
 *_key.txt
 *api_key*
+
+# cles n8n / API — noms francais
+*_cle*
+*cle_*
+*cle_api*
+*_secret*
+*.secret
 
 # tokens / certificats
 *.pem
